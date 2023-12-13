@@ -33,8 +33,6 @@ const Dashboard = () => {
   const PARSE_JAVASCRIPT_KEY = process.env.NEXT_PUBLIC_Key_JS_Key;
   const PARSE_HOST_URL = process.env.NEXT_PUBLIC_Key_Parse_Server_Url;
 
-  const a = 0;
-
   // Your Parse initialization configuration goes here
   Parse.initialize(PARSE_APPLICATION_ID, PARSE_JAVASCRIPT_KEY);
   Parse.serverURL = PARSE_HOST_URL;
