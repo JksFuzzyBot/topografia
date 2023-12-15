@@ -15,6 +15,7 @@ import { Bar, Pie } from "react-chartjs-2";
 import { sumVendas, sumVendedor } from "@/utils/dashboard";
 import moment from "moment";
 import AuthContext from "@/context/AuthContext";
+import { toast } from "react-toastify";
 
 const Parse = require("parse/dist/parse.min.js");
 
@@ -169,7 +170,6 @@ const Dashboard = () => {
   // useEffect para autenticação
   useEffect(() => {
     isAuthenticated();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -219,6 +219,14 @@ const Dashboard = () => {
 
       setVendasInfo(ItensOs);
       setVendasInfoFiltrado(ItensOs);
+
+      toast.success("Dados recuperados com sucesso.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        theme: "light",
+      });
     };
 
     getItemOs();
@@ -318,11 +326,13 @@ const Dashboard = () => {
               Relatório de vendas por vendedor
             </p>
             <div className="flex items-center justify-center border-2 border-black rounded-lg h-[300px] w-full px-4 px-2">
-              {chartVendedor && (
+              {chartVendedor ? (
                 <Pie
                   data={chartVendedor}
                   options={{ plugins: { legend: { position: "right" } } }}
                 />
+              ) : (
+                <span className="loading loading-spinner loading-md"></span>
               )}
             </div>
           </div>
@@ -373,9 +383,11 @@ const Dashboard = () => {
             <p className="font-semibold text-2xl pb-2">
               Relatório de vendas no ano
             </p>
-            <div className="flex items-center border-2 border-black rounded-lg h-[300px] w-full px-4">
-              {chartVendas && (
+            <div className="flex items-center justify-center border-2 border-black rounded-lg h-[300px] w-full px-4">
+              {chartVendas ? (
                 <Bar data={chartVendas} options={optionsVendas} />
+              ) : (
+                <span className="loading loading-spinner loading-md"></span>
               )}
             </div>
           </div>
