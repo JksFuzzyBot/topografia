@@ -254,12 +254,11 @@ const Dashboard = () => {
         timeZone: "UTC",
         month: "long",
       });
-      // month = month.slice(0, 1).toUpperCase() + month.slice(1, 3);
       month = month.slice(0, 1).toUpperCase() + month.slice(1);
 
-      const indexData = acc.findIndex(
-        (data: any) => data.mes === month.toLowerCase()
-      );
+      const indexData = acc.findIndex((data: any) => {
+        return data.mes.toLowerCase() === month.toLowerCase();
+      });
 
       sumVendas(indexData, acc, act);
 
