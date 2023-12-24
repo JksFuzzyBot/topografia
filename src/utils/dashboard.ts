@@ -33,7 +33,10 @@ export const sumVendas = (index: number, acc: any, act: any) => {
     acc[index] = dataAtual;
   } else {
     const date = new Date(act.get("dataItem"));
-    let month = date.toLocaleString("default", { month: "long" });
+    let month = date.toLocaleString("pt-BR", {
+      timeZone: "UTC",
+      month: "long",
+    });
 
     const treatedData = {
       mes: month,

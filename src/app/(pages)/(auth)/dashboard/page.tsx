@@ -250,7 +250,10 @@ const Dashboard = () => {
     const vendasLabel: any[] = vendasInfoFiltrado.reduce((acc, act) => {
       const date = new Date(act.get("dataItem"));
 
-      let month = date.toLocaleString("default", { month: "long" });
+      let month = date.toLocaleString("pt-BR", {
+        timeZone: "UTC",
+        month: "long",
+      });
       // month = month.slice(0, 1).toUpperCase() + month.slice(1, 3);
       month = month.slice(0, 1).toUpperCase() + month.slice(1);
 
