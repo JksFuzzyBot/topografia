@@ -1,8 +1,8 @@
 export const enterpriseData = {
-  name: "Aplicação",
+  name: "Orion Topografia",
   links: {
-    facebook: "https://google.com.br",
-    instagram: "https://google.com.br",
-    linkedin: "https://google.com.br",
+    facebook: "https://www.facebook.com/oriontopografia",
+    instagram: "https://www.instagram.com/oriontopografia/",
+    linkedin: "https://www.linkedin.com/in/orion-topografia-310a3722/",
   },
 };

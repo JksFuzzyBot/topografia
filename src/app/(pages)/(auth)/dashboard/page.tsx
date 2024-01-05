@@ -16,6 +16,9 @@ import { sumVendas, sumVendedor } from "@/utils/dashboard";
 import moment from "moment";
 import AuthContext from "@/context/AuthContext";
 import { toast } from "react-toastify";
+import Image from "next/image";
+
+import Logo from "#/public/img/logo.jpg";
 
 const Parse = require("parse/dist/parse.min.js");
 
@@ -318,8 +321,13 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="w-full pt-20 pb-20">
-        <p className="mx-auto w-fit px-20 pb-2 border-b-2">logo da empresa</p>
+      <div className="w-60 h-60 mx-auto mb-12 relative">
+        <Image
+          objectFit="contain"
+          layout="fill"
+          src={Logo}
+          alt="Topografia logo"
+        />
       </div>
       <div className="flex items-center justify-center">
         <div className="flex justify-center w-[45%] h-full min-w-[500px] px-8">
