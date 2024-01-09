@@ -17,7 +17,7 @@ const loginSchema = yup.object({
 const LoginPage = () => {
   const { links } = enterpriseData;
 
-  const { isAuthenticated, loginFunction } = useContext(AuthContext);
+  const { loginFunction } = useContext(AuthContext);
 
   const {
     register,

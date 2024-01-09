@@ -111,7 +111,11 @@ const Dashboard = () => {
       const date = moment(filtroPeriodo);
 
       const razao = vendedorInfo.empresa.get("razao").toLowerCase();
-      const nome = vendedorInfo.get("idTecnico").get("nome").toLowerCase();
+      const nome = vendedorInfo
+        .get("idOs")
+        .get("idCliente")
+        .get("nome")
+        .toLowerCase();
       const filtroRazao = vendedorFiltro.razao.toLowerCase();
       const filtroNome = vendedorFiltro.nome.toLowerCase();
 
@@ -223,6 +227,8 @@ const Dashboard = () => {
       setVendasInfo(ItensOs);
       setVendasInfoFiltrado(ItensOs);
 
+      console.log(ItensOs);
+
       toast.success("Dados recuperados com sucesso.", {
         position: "top-right",
         autoClose: 2000,
@@ -320,26 +326,28 @@ const Dashboard = () => {
   }, [dataVendas]);
 
   return (
-    <>
-      <div className="w-60 h-60 mx-auto mb-12 relative">
+    <div className="flex items-center w-full">
+      {/* <div className="w-60 h-60 ml-20 relative">
         <Image
           objectFit="contain"
           layout="fill"
           src={Logo}
           alt="Topografia logo"
         />
-      </div>
-      <div className="flex items-center justify-center">
-        <div className="flex justify-center w-[45%] h-full min-w-[500px] px-8">
+      </div> */}
+      <div className="flex flex-col items-center justify-center py-3 w-full">
+        <div className="flex justify-center w-[60%] h-full min-w-[500px]">
           <div className="w-[90%]">
             <p className="font-semibold text-2xl pb-2">
               Relatório de vendas por vendedor
             </p>
-            <div className="flex items-center justify-center border-2 border-black rounded-lg h-[300px] w-full px-4 px-2">
+            <div className="flex items-center justify-center border-2 border-black rounded-lg h-[400px] w-full">
               {chartVendedor ? (
                 <Pie
                   data={chartVendedor}
                   options={{ plugins: { legend: { position: "right" } } }}
+                  width={"100%"}
+                  height={"100%"}
                 />
               ) : (
                 <span className="loading loading-spinner loading-md"></span>
@@ -388,12 +396,12 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        <div className="flex justify-center w-[45%] h-full min-w-[500px] px-8">
+        <div className="flex justify-center w-[60%] h-full min-w-[500px] pt-4">
           <div className="w-[90%]">
             <p className="font-semibold text-2xl pb-2">
-              Relatório de vendas no ano
+              Relatório de ordens de serviço no ano
             </p>
-            <div className="flex items-center justify-center border-2 border-black rounded-lg h-[300px] w-full px-4">
+            <div className="flex items-center justify-center border-2 border-black rounded-lg h-[400px] w-full">
               {chartVendas ? (
                 <Bar data={chartVendas} options={optionsVendas} />
               ) : (
@@ -444,7 +452,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
