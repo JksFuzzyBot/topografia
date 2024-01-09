@@ -327,14 +327,14 @@ const Dashboard = () => {
 
   return (
     <div className="flex items-center w-full">
-      {/* <div className="w-60 h-60 ml-20 relative">
+      <div className="w-60 h-60 ml-20 relative">
         <Image
           objectFit="contain"
           layout="fill"
           src={Logo}
           alt="Topografia logo"
         />
-      </div> */}
+      </div>
       <div className="flex flex-col items-center justify-center py-3 w-full">
         <div className="flex justify-center w-[60%] h-full min-w-[500px]">
           <div className="w-[90%]">
