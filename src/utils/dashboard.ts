@@ -10,7 +10,7 @@ export const sumVendedor = (index: number, acc: any, act: any) => {
     acc[index] = dataAtual;
   } else {
     const treatedTecnico = {
-      nome: act.get("idTecnico").get("nome"),
+      nome: act.get("idOs").get("idCliente").get("nome"),
       valor: act.get("valor"),
       dataItem: act.get("dataItem"),
       color: `${"hsl(" + 360 * Math.random() + "," + 50 + "%," + 50 + "%)"}`,

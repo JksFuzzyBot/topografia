@@ -240,11 +240,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     const vendedoresLabel: any[] = vendedorInfoFiltrado.reduce((acc, act) => {
-      const indexTecnico = acc.findIndex(
-        (tecnico: any) => tecnico.nome === act.get("idTecnico").get("nome")
+      const indexCliente = acc.findIndex(
+        (cliente: any) =>
+          cliente.nome === act.get("idOs").get("idCliente").get("nome")
       );
 
-      sumVendedor(indexTecnico, acc, act);
+      sumVendedor(indexCliente, acc, act);
 
       return acc;
     }, []);
