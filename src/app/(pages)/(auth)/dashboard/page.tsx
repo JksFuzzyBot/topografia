@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 
 import Logo from "#/public/img/logo.jpg";
+import Button from "@/components/Button";
 
 const Parse = require("parse/dist/parse.min.js");
 
@@ -159,13 +160,11 @@ const Dashboard = () => {
       if (vendasFiltro.monthStart !== "") {
         const filtroMonthStart = moment(vendasFiltro.monthStart);
         elementValid = elementValid && date.isSameOrAfter(filtroMonthStart);
-        console.log(elementValid);
       }
 
       if (vendasFiltro.monthEnd !== "") {
         const filtroMonthEnd = moment(vendasFiltro.monthEnd);
         elementValid = elementValid && date.isSameOrBefore(filtroMonthEnd);
-        console.log(elementValid);
       }
 
       return elementValid;
@@ -226,8 +225,6 @@ const Dashboard = () => {
 
       setVendasInfo(ItensOs);
       setVendasInfoFiltrado(ItensOs);
-
-      console.log(ItensOs);
 
       toast.success("Dados recuperados com sucesso.", {
         position: "top-right",
@@ -338,17 +335,23 @@ const Dashboard = () => {
       <div className="flex flex-col items-center justify-center py-3 w-full">
         <div className="flex justify-center w-[60%] h-full min-w-[500px]">
           <div className="w-[90%]">
-            <p className="font-semibold text-2xl pb-2">
-              Relatório de vendas por vendedor
-            </p>
+            <p className="font-semibold text-2xl pb-2">Serviços por Cliente</p>
             <div className="flex items-center justify-center border-2 border-black rounded-lg h-[400px] w-full">
               {chartVendedor ? (
-                <Pie
-                  data={chartVendedor}
-                  options={{ plugins: { legend: { position: "right" } } }}
-                  width={"100%"}
-                  height={"100%"}
-                />
+                <>
+                  <Pie
+                    data={chartVendedor}
+                    options={{
+                      plugins: {
+                        legend: {
+                          position: "right",
+                        },
+                      },
+                    }}
+                    width={"100%"}
+                    height={"100%"}
+                  />
+                </>
               ) : (
                 <span className="loading loading-spinner loading-md"></span>
               )}
@@ -356,6 +359,13 @@ const Dashboard = () => {
           </div>
           <div className="w-[150px] ml-8 mt-4">
             <p className="font-semibold">Filtros</p>
+            <Button
+              onClick={() => {
+                setChartVendas([]);
+              }}
+            >
+              Limpar Todos
+            </Button>
             <InputComponent
               className=" bg-gray-200 p-1 focus:outline-gray-200"
               onChange={(e) => {
@@ -392,14 +402,14 @@ const Dashboard = () => {
                   return { ...prevState, nome: e.target.value };
                 });
               }}
-              labelText="Vendedor"
+              labelText="Cliente"
             />
           </div>
         </div>
         <div className="flex justify-center w-[60%] h-full min-w-[500px] pt-4">
           <div className="w-[90%]">
             <p className="font-semibold text-2xl pb-2">
-              Relatório de ordens de serviço no ano
+              Ordens de Serviço por Período
             </p>
             <div className="flex items-center justify-center border-2 border-black rounded-lg h-[400px] w-full">
               {chartVendas ? (
