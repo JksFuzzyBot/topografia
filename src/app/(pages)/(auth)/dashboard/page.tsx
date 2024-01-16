@@ -67,7 +67,7 @@ const Dashboard = () => {
     cliente: "",
   });
 
-  const { isAuthenticated, router, signed, user } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
 
   const optionsVendas = {
     scales: {
@@ -190,7 +190,8 @@ const Dashboard = () => {
         queryItemOs.include("idTecnico");
         queryItemOs.include("idOs");
 
-        const ItensOs = await queryItemOs.find();
+        const ItensOs: any[] = await queryItemOs.find();
+        const newArr: any[] = [];
 
         const osQuery = new Parse.Query("Os");
 
@@ -204,19 +205,19 @@ const Dashboard = () => {
           const [os] = await osQuery.find();
 
           if (
-            os.get("idEmpresa")?.id !== user?.get("idEmpresa")?.id ||
-            os.get("idEmpresa")?.id !==
+            os.get("idEmpresa")?.id === user?.get("idEmpresa")?.id &&
+            os.get("idEmpresa")?.id ===
               os.get("idCliente")?.get("idEmpresa")?.id
           ) {
-            ItensOs.splice(i, 1);
+            newArr.push(itemOs);
           }
         }
 
-        setVendedorInfo(ItensOs);
-        setVendedorInfoFiltrado(ItensOs);
+        setVendedorInfo(newArr);
+        setVendedorInfoFiltrado(newArr);
+        setVendasInfo(newArr);
+        setVendasInfoFiltrado(newArr);
 
-        setVendasInfo(ItensOs);
-        setVendasInfoFiltrado(ItensOs);
         toast.success("Dados recuperados com sucesso.", {
           position: "top-right",
           autoClose: 2000,
@@ -237,9 +238,7 @@ const Dashboard = () => {
           cliente.nome === act.get("idOs").get("idCliente").get("nome")
       );
 
-      if (act.get("idOs").get("idCliente").get("nome")) {
-        sumVendedor(indexCliente, acc, act);
-      }
+      sumVendedor(indexCliente, acc, act);
 
       return acc;
     }, []);
