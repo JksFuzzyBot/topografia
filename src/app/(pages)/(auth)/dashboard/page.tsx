@@ -67,7 +67,7 @@ const Dashboard = () => {
     cliente: "",
   });
 
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, router, signed, user } = useContext(AuthContext);
 
   const optionsVendas = {
     scales: {
@@ -176,67 +176,59 @@ const Dashboard = () => {
   // useEffect para autenticação
   useEffect(() => {
     isAuthenticated();
+
+    // if (!signed) {
+    //   router.push("/login");
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const getItemOs = async () => {
-      const queryItemOs = new Parse.Query("ItemOs");
-      queryItemOs.include("idTecnico");
-      queryItemOs.include("idOs");
+      if (user?.get("idEmpresa")?.id) {
+        const queryItemOs = new Parse.Query("ItemOs");
+        queryItemOs.include("idTecnico");
+        queryItemOs.include("idOs");
 
-      const ItensOs = await queryItemOs.find();
+        const ItensOs = await queryItemOs.find();
 
-      const empresaArr: any[] = [];
-      const clientArr: any[] = [];
+        const osQuery = new Parse.Query("Os");
 
-      const osQuery = new Parse.Query("Os");
-      for (let i = 0; i < ItensOs.length; i++) {
-        const itemOs = ItensOs[i];
+        for (let i = 0; i < ItensOs.length; i++) {
+          const itemOs = ItensOs[i];
 
-        const notInEmpresaArr = empresaArr.findIndex(
-          (empresaArr) => empresaArr.id === itemOs.get("idEmpresa").id
-        );
-        const notInClienteArr = clientArr.findIndex(
-          (cliente) => cliente.id === itemOs.get("idCliente").id
-        );
+          osQuery.equalTo("objectId", itemOs.get("idOs").id);
+          osQuery.include("idCliente");
+          osQuery.include("idEmpresa");
 
-        osQuery.equalTo("objectId", itemOs.get("idOs").id);
-        osQuery.include("idCliente");
-        osQuery.include("idEmpresa");
+          const [os] = await osQuery.find();
 
-        const [os] = await osQuery.find();
-
-        if (notInEmpresaArr) {
-          itemOs.empresa = os.get("idEmpresa");
-        } else {
-          itemOs.empresa = empresaArr[notInEmpresaArr];
+          if (
+            os.get("idEmpresa")?.id !== user?.get("idEmpresa")?.id ||
+            os.get("idEmpresa")?.id !==
+              os.get("idCliente")?.get("idEmpresa")?.id
+          ) {
+            ItensOs.splice(i, 1);
+          }
         }
 
-        if (notInClienteArr) {
-          itemOs.os = os.get("idOs");
-        } else {
-          itemOs.os = clientArr[notInClienteArr];
-        }
+        setVendedorInfo(ItensOs);
+        setVendedorInfoFiltrado(ItensOs);
+
+        setVendasInfo(ItensOs);
+        setVendasInfoFiltrado(ItensOs);
+        toast.success("Dados recuperados com sucesso.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          theme: "light",
+        });
       }
-
-      setVendedorInfo(ItensOs);
-      setVendedorInfoFiltrado(ItensOs);
-
-      setVendasInfo(ItensOs);
-      setVendasInfoFiltrado(ItensOs);
-
-      toast.success("Dados recuperados com sucesso.", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        theme: "light",
-      });
     };
 
     getItemOs();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const vendedoresLabel: any[] = vendedorInfoFiltrado.reduce((acc, act) => {
@@ -245,7 +237,9 @@ const Dashboard = () => {
           cliente.nome === act.get("idOs").get("idCliente").get("nome")
       );
 
-      sumVendedor(indexCliente, acc, act);
+      if (act.get("idOs").get("idCliente").get("nome")) {
+        sumVendedor(indexCliente, acc, act);
+      }
 
       return acc;
     }, []);
@@ -267,7 +261,9 @@ const Dashboard = () => {
         return data.mes.toLowerCase() === month.toLowerCase();
       });
 
-      sumVendas(indexData, acc, act);
+      if (act.get("idOs")?.get("idCliente")?.get("nome")) {
+        sumVendas(indexData, acc, act);
+      }
 
       return acc;
     }, []);
@@ -311,7 +307,7 @@ const Dashboard = () => {
       labels,
       datasets: [
         {
-          label: "Valor",
+          label: "Total Item",
           data: dataVendas.map((data) => data.valor),
           backgroundColor: dataVendas.map((data) => data.color),
         },
@@ -360,13 +356,6 @@ const Dashboard = () => {
           </div>
           <div className="w-[150px] ml-8 mt-4">
             <p className="font-semibold">Filtros</p>
-            <Button
-              onClick={() => {
-                setChartVendas([]);
-              }}
-            >
-              Limpar Todos
-            </Button>
             <InputComponent
               className=" bg-gray-200 p-1 focus:outline-gray-200"
               onChange={(e) => {

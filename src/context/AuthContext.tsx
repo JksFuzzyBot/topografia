@@ -15,6 +15,7 @@ const Parse = require("parse/dist/parse.min.js");
 
 interface iAuthContext {
   signed: boolean;
+  user: any;
   setUser: Dispatch<SetStateAction<undefined>>;
   router: AppRouterInstance;
   isAuthenticated(): Promise<void>;
@@ -41,8 +42,10 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
   const loginFunction = (data: any) => {
     const { email, password } = data;
     // Create a new instance of the user class
-    var user = Parse.User.logIn(email, password)
-      .then(function (user: any) {
+    Parse.User.logIn(email, password)
+      .then(async function (user: any) {
+        setUser(user);
+
         toast.success("Usuário logado com sucesso!", {
           position: "top-right",
           autoClose: 2000,
@@ -91,6 +94,7 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
     <AuthContext.Provider
       value={{
         signed: !!user,
+        user,
         setUser,
         router,
         isAuthenticated,
