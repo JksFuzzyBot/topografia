@@ -111,17 +111,14 @@ const Dashboard = () => {
       const filtroPeriodo = vendedorInfo.get("dataItem");
       const date = moment(filtroPeriodo);
 
-      const razao = vendedorInfo.empresa.get("razao").toLowerCase();
       const nome = vendedorInfo
         .get("idOs")
         .get("idCliente")
         .get("nome")
         .toLowerCase();
-      const filtroRazao = vendedorFiltro.razao.toLowerCase();
       const filtroNome = vendedorFiltro.nome.toLowerCase();
 
-      let elementValid =
-        razao.includes(filtroRazao) && nome.includes(filtroNome);
+      let elementValid = nome.includes(filtroNome);
 
       if (vendedorFiltro.monthStart !== "") {
         const filtroMonthStart = moment(vendedorFiltro.monthStart);
@@ -144,18 +141,15 @@ const Dashboard = () => {
       const filtroPeriodo = vendaInfo.get("dataItem");
       const date = moment(filtroPeriodo);
 
-      const razao = vendaInfo.empresa.get("razao").toLowerCase();
       const cliente = vendaInfo
         .get("idOs")
         .get("idCliente")
         .get("nome")
         .toLowerCase();
 
-      const filtroRazao = vendasFiltro.razao.toLowerCase();
       const filtroCliente = vendasFiltro.cliente.toLowerCase();
 
-      let elementValid =
-        razao.includes(filtroRazao) && cliente.includes(filtroCliente);
+      let elementValid = cliente.includes(filtroCliente);
 
       if (vendasFiltro.monthStart !== "") {
         const filtroMonthStart = moment(vendasFiltro.monthStart);
@@ -379,15 +373,6 @@ const Dashboard = () => {
               className=" bg-gray-200 p-1 focus:outline-gray-200"
               onChange={(e) => {
                 setVendedorFiltro((prevState) => {
-                  return { ...prevState, razao: e.target.value };
-                });
-              }}
-              labelText="Empresa"
-            />
-            <InputComponent
-              className=" bg-gray-200 p-1 focus:outline-gray-200"
-              onChange={(e) => {
-                setVendedorFiltro((prevState) => {
                   return { ...prevState, nome: e.target.value };
                 });
               }}
@@ -429,15 +414,6 @@ const Dashboard = () => {
               }}
               labelText="Período Fim"
               type="date"
-            />
-            <InputComponent
-              className=" bg-gray-200 p-1 focus:outline-gray-200"
-              onChange={(e) => {
-                setVendasFiltro((prevState) => {
-                  return { ...prevState, razao: e.target.value };
-                });
-              }}
-              labelText="Empresa"
             />
             <InputComponent
               className=" bg-gray-200 p-1 focus:outline-gray-200"
